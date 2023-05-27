@@ -34,8 +34,6 @@ class ScreenCapture:
         self.rect = rect or win32gui.GetWindowRect(self.hwnd)
         w = self.rect[2] - self.rect[0]
         h = self.rect[3] - self.rect[1]
-        print(f'w = {w}')
-        print(f'h = {h}')
         self.hwndDC = win32gui.GetWindowDC(self.hwnd)
         self.mfcDC = win32ui.CreateDCFromHandle(self.hwndDC)
         self.saveDC = self.mfcDC.CreateCompatibleDC()

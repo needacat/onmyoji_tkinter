@@ -10,7 +10,7 @@ import win32api
 import win32con
 import win32gui
 
-from config import MATCHING_RATE
+from config import *
 
 
 def read_pic(tempPath):
@@ -30,11 +30,15 @@ def template_matching(src, template):
     result = cv2.matchTemplate(src_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
     # 输出匹配度
-    # logger.info(f'匹配度: {max_val:.2f}')
-    print(f'匹配度: {max_val:.2f}')
+    print(f'[R] {max_val:.2f}')
+
     if max_val >= MATCHING_RATE:
+        _height, _width = template_gray.shape
         screen_x, screen_y = max_loc
-        return screen_x * 2, screen_y * 2
+
+        # 图片经过缩小，*2还原
+        # 高、宽为原来的一半，加上后坐标即为匹配图形中心点坐标
+        return screen_x * 2 + _width, screen_y * 2 + _height
     else:
         return None
 
@@ -52,13 +56,11 @@ def post_click(hwnd, client_x, client_y):
 def click_matched(hwnd, loc, log, tInt):
     if loc:
         time.sleep(random.random() + random.randint(0, 1))
-        client_x = loc[0] + random.randint(-15, 15)
-        client_y = loc[1] + random.randint(-15, 15)
+        client_x = loc[0] + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
+        client_y = loc[1] + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
         post_click(hwnd, client_x, client_y)
         # logger.info(f'post {hwnd} {client_x},{client_y}')
-        print(f'post {hwnd} {client_x},{client_y}')
-        print(loc[0] + random.randint(-15, 15))
-        print(loc[1] + random.randint(-15, 15))
+        print(f'[P] {hwnd} {client_x},{client_y}')
         # 时间格式 %Y-%m-%d %H:%M:%S
-        log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f'\t{tInt.get()}匹配成功\n')
+        log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
         time.sleep(2)
