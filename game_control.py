@@ -23,22 +23,14 @@ def read_pic(tempPath):
 def template_matching(src, template):
     src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
     template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
-    # 将模板大小调整到一半
-    src_gray = cv2.resize(src_gray, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
-    template_gray = cv2.resize(template_gray, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
     # 进行匹配
     result = cv2.matchTemplate(src_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
-    # 输出匹配度
-    print(f'[R] {max_val:.2f}')
-
     if max_val >= MATCHING_RATE:
         _height, _width = template_gray.shape
         screen_x, screen_y = max_loc
 
-        # 图片经过缩小，*2还原
-        # 高、宽为原来的一半，加上后坐标即为匹配图形中心点坐标
-        return screen_x * 2 + _width, screen_y * 2 + _height
+        return screen_x + _width // 2, screen_y + _height // 2, max_val
     else:
         return None
 
@@ -53,14 +45,13 @@ def post_click(hwnd, client_x, client_y):
     win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
 
 
-def click_matched(hwnd, loc, log, tInt):
-    if loc:
-        time.sleep(random.random() + random.randint(0, 1))
-        client_x = loc[0] + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
-        client_y = loc[1] + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
-        post_click(hwnd, client_x, client_y)
-        # logger.info(f'post {hwnd} {client_x},{client_y}')
-        print(f'[P] {hwnd} {client_x},{client_y}')
-        # 时间格式 %Y-%m-%d %H:%M:%S
-        log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
-        time.sleep(2)
+def click_matched(hwnd, x, y, log, tInt):
+    time.sleep(random.random() + random.randint(0, 1))
+    client_x = x + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
+    client_y = y + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
+    post_click(hwnd, client_x, client_y)
+    # logger.info(f'post {hwnd} {client_x},{client_y}')
+    print(f'[P] | {hwnd} ({client_x},{client_y})', end='\n——————————————————————————\n')
+    # 时间格式 %Y-%m-%d %H:%M:%S
+    # log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
+    time.sleep(2)

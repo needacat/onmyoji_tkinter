@@ -42,8 +42,6 @@ def show_window(hwnd):
 def resize_window(hwnd, width, height):
     show_window(hwnd)
     x, y, _, _ = win32gui.GetWindowRect(hwnd)
-    # print(f'x = {x},y = {y}')
-    # print(f'width = {width},height = {height}')
     win32gui.MoveWindow(hwnd, x, y, width, height, True)
     # ctypes.windll.shcore.SetProcessDpiAwareness(2)
     # win32gui.SetWindowPos(hwnd, None, 150, 150, height, width, win32con.SWP_NOACTIVATE)

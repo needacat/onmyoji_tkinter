@@ -41,16 +41,22 @@ def orochi():
             with ScreenCapture() as sc:
                 # sc.capture(hwnd, filepath='resource/sc.png')
                 sc.capture(hwnd)
-                for temp in AC:
-                    print(f'[M] {temp}')
-                    loc = template_matching(sc.get_image(), read_pic('./resource/' + temp))
-                    if loc:
-                        print(f'[L] {loc[0]}, {loc[1]}')
-                        click_matched(hwnd, loc, log, tInt)
-                        if temp == AC[1]:
+                for temp in TEMP_LIST:
+                    # print(f'[M] {temp}')
+                    result = template_matching(sc.get_image(), read_pic('./resource/' + temp))
+                    if result:
+                        match_x, match_y, max_val = result
+
+                        print(f'[M] | {temp}')
+                        print(f'[R] | {max_val:.2f}')
+                        print(f'[L] | ({match_x},{match_y})')
+                        log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [L] | {temp}\n')
+
+                        click_matched(hwnd, match_x, match_y, log, tInt)
+                        if temp == TEMP_LIST[1]:
                             tInt.set(tInt.get() - 1)
                         break
-            time.sleep(T_INTERVAL)
+            time.sleep(M_INTERVAL)
 
     btn['command'] = lambda: threading.Thread(target=orochi).start()
     btn['state'] = NORMAL
