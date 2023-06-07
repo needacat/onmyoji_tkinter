@@ -3,6 +3,9 @@ import logging
 import threading
 from tkinter import *
 
+import mouse
+import win32api
+
 from screen_capture import *
 from config import *
 from window_control import *
@@ -17,16 +20,6 @@ logger.addHandler(handler)
 
 
 def orochi():
-    # if tInt.get() > 0:
-    #     logger.info("========开始匹配========")
-    #     btn['state'] = DISABLED
-    #     btn['text'] = 'Running'
-    #
-    #     hwnd_list = []
-    #     win32gui.EnumWindows(EnumWindowsProc, hwnd_list)
-    # else:
-    #     logger.warning('-----匹配次数为0！-----')
-    #     return
     if tInt.get() <= 0:
         tInt.set(DEFAULT_COUNT)
     logger.info("========开始匹配========")
@@ -34,7 +27,7 @@ def orochi():
     btn['text'] = 'Running'
     hwnd_list = []
     win32gui.EnumWindows(EnumWindowsProc, hwnd_list)
-
+    _last_matched = '1.png'
     while tInt.get() > 0:
         for hwnd in hwnd_list:
             show_window(hwnd)
@@ -43,17 +36,17 @@ def orochi():
                 sc.capture(hwnd)
                 for temp in TEMP_LIST:
                     # print(f'[M] {temp}')
+                    if temp != '1.png':
+                        _last_matched = temp
                     result = template_matching(sc.get_image(), read_pic('./resource/' + temp))
                     if result:
                         match_x, match_y, max_val = result
-
                         print(f'[M] | {temp}')
                         print(f'[R] | {max_val:.2f}')
                         print(f'[L] | ({match_x},{match_y})')
                         log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [L] | {temp}\n')
-
                         click_matched(hwnd, match_x, match_y, log, tInt)
-                        if temp == TEMP_LIST[1]:
+                        if temp == LOOP_FLAG and _last_matched != '1.png':
                             tInt.set(tInt.get() - 1)
                         break
             time.sleep(M_INTERVAL)

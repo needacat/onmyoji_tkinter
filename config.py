@@ -6,9 +6,9 @@ V5_DIR = r'E:\Download\Compressed\V5多开\V5.exe'
 # 默认执行次数
 DEFAULT_COUNT = 60
 # 匹配间隔
-M_INTERVAL = 0.1
+M_INTERVAL = 0.5
 MATCHING_RATE = 0.85
-CLICK_OFFSET = 8
+CLICK_OFFSET = 15
 
 # 窗口resize后的大小
 RESIZE_XY = [882, 497]
@@ -21,7 +21,7 @@ OROCHI = [
 ]
 # 结界
 BOUNDARY = [
-    'xsfy_close.png',
+    # 'xsfy_close.png',
     'jj_jg.png'
 ]
 # 活动
@@ -33,4 +33,4 @@ AC = [
 
 # 匹配标志
 LOOP_FLAG = OROCHI[1]
-TEMP_LIST = AC
+TEMP_LIST = OROCHI

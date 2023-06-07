@@ -5,6 +5,13 @@ import config
 from game_control import *
 
 
+def post_key(hwnd):
+    win32gui.PostMessage(hwnd, win32con.WM_KEYDOWN, win32con.VK_RETURN, 0)
+    time.sleep(0.2)
+    # 发送 WM_KEYUP 消息
+    win32gui.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
+
+
 def callback(chwnd, param):
     if win32gui.GetWindowText(chwnd) == '隔离打开程序':
         post_click(chwnd, 63, 20)
@@ -43,8 +50,6 @@ def resize_window(hwnd, width, height):
     show_window(hwnd)
     x, y, _, _ = win32gui.GetWindowRect(hwnd)
     win32gui.MoveWindow(hwnd, x, y, width, height, True)
-    # ctypes.windll.shcore.SetProcessDpiAwareness(2)
-    # win32gui.SetWindowPos(hwnd, None, 150, 150, height, width, win32con.SWP_NOACTIVATE)
 
 
 def EnumWindowsProc(hwnd, hwnd_list):

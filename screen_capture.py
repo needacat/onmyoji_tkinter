@@ -27,7 +27,6 @@ class ScreenCapture:
         if self.hwndDC is not None and self.hwnd is not None:
             win32gui.ReleaseDC(self.hwnd, self.hwndDC)
         if self.Bitmap is not None and self.Bitmap.GetHandle() != 0:
-
             win32gui.DeleteObject(self.Bitmap.GetHandle())
 
     def capture(self, hwnd=None, rect=None, filepath=None):
