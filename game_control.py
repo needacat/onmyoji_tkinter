@@ -1,11 +1,7 @@
-from datetime import datetime
 import random
 import time
 
 import cv2
-import tkinter as tk
-
-import mouse
 import numpy as np
 import win32api
 import win32con
@@ -30,19 +26,10 @@ def template_matching(src, template):
     if max_val >= MATCHING_RATE:
         _height, _width = template_gray.shape
         screen_x, screen_y = max_loc
-
+        print(f'{screen_x}, {screen_y}')
         return screen_x + _width // 2, screen_y + _height // 2, max_val
     else:
         return None
-
-
-def post_click1(hwnd, client_x, client_y):
-    win32api.SetCursorPos((client_x, client_y))
-
-    # 向窗口发送消息模拟鼠标左键单击事件
-    LPARAM = win32api.MAKELONG(client_x, client_y)
-    win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, LPARAM)
-    win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
 
 
 def post_click(hwnd, client_x, client_y):

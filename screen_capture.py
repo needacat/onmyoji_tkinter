@@ -38,13 +38,14 @@ class ScreenCapture:
         self.mfcDC = win32ui.CreateDCFromHandle(self.hwndDC)
         self.saveDC = self.mfcDC.CreateCompatibleDC()
         self.Bitmap = win32ui.CreateBitmap()
-        # self.Bitmap.CreateCompatibleBitmap(self.mfcDC, 820, 462)
-        self.Bitmap.CreateCompatibleBitmap(self.mfcDC, w, h)
+        self.Bitmap.CreateCompatibleBitmap(self.mfcDC, 820, 462)
+        # self.Bitmap.CreateCompatibleBitmap(self.mfcDC, w, h)
         self.saveDC.SelectObject(self.Bitmap)
+        # print(f'w={w},h={h}')
 
         #                   目标                              源
-        # self.saveDC.BitBlt((0, 0), (820, 462), self.mfcDC, (w, 35), win32con.SRCCOPY)
-        self.saveDC.BitBlt((0, 0), (w, h), self.mfcDC, (0, 0), win32con.SRCCOPY)
+        self.saveDC.BitBlt((0, 0), (820, 462), self.mfcDC, (9, 35), win32con.SRCCOPY)
+        # self.saveDC.BitBlt((0, 0), (w, h), self.mfcDC, (0, 0), win32con.SRCCOPY)
 
         if filepath is not None:
             self.Bitmap.SaveBitmapFile(self.saveDC, filepath)

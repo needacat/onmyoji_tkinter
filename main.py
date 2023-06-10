@@ -1,13 +1,10 @@
 import ctypes
 import logging
 import threading
+from datetime import *
 from tkinter import *
 
-import mouse
-import win32api
-
 from screen_capture import *
-from config import *
 from window_control import *
 
 logger = logging.getLogger(__name__)
@@ -27,27 +24,26 @@ def orochi():
     btn['text'] = 'Running'
     hwnd_list = []
     win32gui.EnumWindows(EnumWindowsProc, hwnd_list)
-    _last_matched = '1.png'
+    _last_matched = False
     while tInt.get() > 0:
-        for hwnd in hwnd_list:
-            show_window(hwnd)
-            with ScreenCapture() as sc:
-                # sc.capture(hwnd, filepath='resource/sc.png')
-                sc.capture(hwnd)
-                for temp in TEMP_LIST:
-                    # print(f'[M] {temp}')
-                    if temp != '1.png':
-                        _last_matched = temp
-                    result = template_matching(sc.get_image(), read_pic('./resource/' + temp))
-                    if result:
-                        match_x, match_y, max_val = result
-                        print(f'[M] | {temp}')
-                        print(f'[R] | {max_val:.2f}')
-                        print(f'[L] | ({match_x},{match_y})')
-                        log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [L] | {temp}\n')
-                        click_matched(hwnd, match_x, match_y, log, tInt)
-                        if temp == LOOP_FLAG and _last_matched != '1.png':
+        for _hwnd in hwnd_list:
+            show_window(_hwnd)
+            with ScreenCapture() as _sc:
+                # _sc.capture(_hwnd, filepath='resource/sc.png')
+                _sc.capture(_hwnd)
+                for _temp in TEMP_LIST:
+                    _match_result = template_matching(_sc.get_image(), read_pic('./resource/' + _temp))
+                    if _match_result:
+                        if _temp == LOOP_FLAG and _last_matched != LOOP_FLAG:
                             tInt.set(tInt.get() - 1)
+                        _last_matched = _temp
+                        _match_x, _match_y, _max_val = _match_result
+                        print(f'[M] | {_temp[:-4]}')
+                        print(f'[R] | {_max_val:.2f}')
+                        print(f'[L] | ({_match_x},{_match_y})')
+                        log.insert('end', datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [L] | {_temp[:-4]}\n')
+                        click_matched(_hwnd, _match_x, _match_y, log, tInt)
+
                         break
             time.sleep(M_INTERVAL)
 
