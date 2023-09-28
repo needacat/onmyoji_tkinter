@@ -9,7 +9,7 @@ DEFAULT_COUNT = 60
 # 匹配间隔
 M_INTERVAL = 0.15
 # 匹配率阈值
-THRESHOLD = 0.95
+THRESHOLD = 0.9
 CLICK_OFFSET = 10
 
 # 窗口resize后的大小

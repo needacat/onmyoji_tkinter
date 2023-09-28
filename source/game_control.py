@@ -56,12 +56,12 @@ def templates_match(src, template):
     all_loc = np.where(res >= THRESHOLD)
 
     # 圈出匹配部分
-    # for pt in zip(*all_loc[::-1]):
-    #     bottom_right = (pt[0] + w, pt[1] + h)
-    #     cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
-    #     print(pt, bottom_right)
-    # cv2.imshow('img_rgb', src)
-    # cv2.waitKey(0)
+    for pt in zip(*all_loc[::-1]):
+        bottom_right = (pt[0] + w, pt[1] + h)
+        cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
+        print(pt, bottom_right)
+    cv2.imshow('img_rgb', src)
+    cv2.waitKey(0)
 
     locs = list(zip(*all_loc[::-1]))
     for i in range(0, len(locs)):
@@ -70,6 +70,8 @@ def templates_match(src, template):
 
 
 def template_match_color(src, template):
+    # src = src.astype(np.uint8)
+    # template = template.astype(np.uint8)
     # 进行匹配
     result = cv2.matchTemplate(src, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)

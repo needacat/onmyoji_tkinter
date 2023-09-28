@@ -159,16 +159,19 @@ def field():
                 _sc.capture(hwnd)
                 loc = template_match(_sc.get_image(), read_pic(RESOURCE_PATH + 'Scene_Filed.png'))
                 if loc is not None:
-                    locs = templates_match(_sc.get_image(), read_pic(RESOURCE_PATH + 'Filed_Finished.png'))
-                    if len(locs) == 9:
-                        print("结界已突破完毕！")
-                        return
                     # 浅拷贝，使用深拷贝会导致原始列表被删除
                     reloc = Filed_Loc[:]
-                    # 有已突破的结界则除去对应坐标
+                    _sc.capture(hwnd)
+                    locs = template_match_color(_sc.get_image(), read_pic(RESOURCE_PATH + 'Filed_Finished.png'))
+                    # 判断是否有已突破结界
                     if locs is not None:
+                        if len(locs) == 9:
+                            print("结界已突破完毕！")
+                            return
+                        # 有已突破的结界则除去对应坐标
                         for loc in locs:
                             index = get_index(loc[0], loc[1])
+                            print("filed_loc : ", Filed_Loc[index])
                             reloc.remove(Filed_Loc[index])
 
                     loc = reloc[0]
