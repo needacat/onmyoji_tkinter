@@ -1,33 +1,22 @@
-import ctypes
-import subprocess
-from tkinter import Tk, Button
+def get_index(x, y):
+    def get_i(num):
+        if 0 <= num < 0.33:
+            return 0
+        elif 0.33 <= num < 0.66:
+            return 1
+        elif 0.66 <= num <= 1:
+            return 2
 
-from source.game_control import *
+    # 结界图片偏移
+    _offset_x = -94
+    _offset_y = -93
+    _w = 626
+    _h = 249
 
-
-def callback(chwnd, param):
-    if win32gui.GetWindowText(chwnd) == '隔离打开程序':
-        post_click(chwnd, 63, 20)
-        time.sleep(0.6)
-        post_click(chwnd, 63, 20)
-        time.sleep(0.6)
-
-
-def t():
-    subprocess.run(r'start /b E:\Download\Compressed\V5多开\V5.exe', shell=True)
-    time.sleep(0.65)
-    _v5_hwnd = win32gui.FindWindow(None, 'V5 程序多开器 0.1 Beta')
-    win32gui.EnumChildWindows(_v5_hwnd, callback, None)
-    win32api.PostMessage(_v5_hwnd, win32con.WM_CLOSE, 0, 0)
+    _rate_x = round((x + _offset_x) / _w, 3)
+    _rate_y = round((y + _offset_y) / _h, 3)
+    print(f"{x},{y} = ", end="")
+    return get_i(_rate_x) + get_i(_rate_y) * 3
 
 
-ctypes.windll.shcore.SetProcessDpiAwareness(2)
-main = Tk()
-main.geometry('350x300+700+400')
-main.attributes('-topmost', True)
-main.resizable(False, False)
-
-btn = Button(main, width=5, command=t, text='Start')
-btn.grid(row=0, column=1, sticky='n')
-
-main.mainloop()
+print(get_index(465, 105))

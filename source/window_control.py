@@ -12,15 +12,14 @@ def post_key(hwnd):
     win32gui.PostMessage(hwnd, win32con.WM_KEYUP, win32con.VK_RETURN, 0)
 
 
-def callback(chwnd, param):
-    if win32gui.GetWindowText(chwnd) == '隔离打开程序':
-        post_click(chwnd, 63, 20)
-        time.sleep(0.6)
-        post_click(chwnd, 63, 20)
-        time.sleep(0.6)
-
-
 def open_games():
+    def callback(chwnd, param):
+        if win32gui.GetWindowText(chwnd) == '隔离打开程序':
+            post_click(chwnd, 63, 20)
+            time.sleep(0.6)
+            post_click(chwnd, 63, 20)
+            time.sleep(0.6)
+
     try:
         subprocess.run(r'start /b E:\Download\Compressed\V5多开\V5.exe', shell=True)
         time.sleep(0.65)

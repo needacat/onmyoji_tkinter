@@ -1,5 +1,6 @@
 import random
 import time
+from datetime import datetime
 
 import cv2
 import numpy as np
@@ -18,19 +19,63 @@ def read_pic(tempPath):
         return img
     except Exception as e:
         print(e)
-        return None
+    return None
 
 
-def template_matching(src, template):
+def template_match(src, template):
     src_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
     template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     # 进行匹配
     result = cv2.matchTemplate(src_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
-    if max_val >= MATCHING_RATE:
+    print("maxval = ", max_val)
+    # cv2.imshow("111", template_gray)
+    # cv2.waitKey(0)
+    if max_val >= THRESHOLD:
         _height, _width = template_gray.shape
+        max_x, max_y = max_loc
+
+        # cv2.rectangle(src, (max_x, max_y), (max_x + _width, max_y + _height), (0, 255, 0), 2)
+        # cv2.imshow("111", src)
+        # cv2.waitKey(0)
+
+        return max_x + _width // 2, max_y + _height // 2, max_val
+
+    return None
+
+
+def templates_match(src, template):
+    img_gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+    template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    # template = cv2.imread(template, 0)
+    h, w = template_gray.shape[:2]
+
+    res = cv2.matchTemplate(img_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+    # 取匹配程度大于%90的坐标
+    # np.where返回的坐标值(x,y)是(h,w)，注意h,w的顺序
+    all_loc = np.where(res >= THRESHOLD)
+
+    # 圈出匹配部分
+    # for pt in zip(*all_loc[::-1]):
+    #     bottom_right = (pt[0] + w, pt[1] + h)
+    #     cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
+    #     print(pt, bottom_right)
+    # cv2.imshow('img_rgb', src)
+    # cv2.waitKey(0)
+
+    locs = list(zip(*all_loc[::-1]))
+    for i in range(0, len(locs)):
+        locs[i] = (locs[i][0] + w // 2, locs[i][1] + h // 2)
+    return locs
+
+
+def template_match_color(src, template):
+    # 进行匹配
+    result = cv2.matchTemplate(src, template, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, max_loc = cv2.minMaxLoc(result)
+    if max_val >= THRESHOLD:
+        _height, _width = template.shape
         screen_x, screen_y = max_loc
-        print(f'{screen_x}, {screen_y}')
         return screen_x + _width // 2, screen_y + _height // 2, max_val
     else:
         return None
@@ -46,7 +91,7 @@ def post_click(hwnd, client_x, client_y):
     win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
 
 
-def click_matched(hwnd, x, y, log, tInt):
+def click_matched(hwnd, x, y, log_text, tInt):
     time.sleep(random.random() + random.randint(0, 1))
     client_x = x + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
     client_y = y + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
@@ -54,5 +99,5 @@ def click_matched(hwnd, x, y, log, tInt):
     # logger.info(f'post {hwnd} {client_x},{client_y}')
     print(f'[P] | {hwnd} ({client_x},{client_y})', end='\n——————————————————————————\n')
     # 时间格式 %Y-%m-%d %H:%M:%S
-    # log.insert(tk.END, datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
+    log_text.insert('end', datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
     time.sleep(2)

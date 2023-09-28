@@ -49,7 +49,6 @@ class ScreenCapture:
 
         if filepath is not None:
             self.Bitmap.SaveBitmapFile(self.saveDC, filepath)
-
         return self.get_image()
 
     def get_image(self):
