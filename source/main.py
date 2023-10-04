@@ -162,7 +162,7 @@ def field():
                     # 浅拷贝，使用深拷贝会导致原始列表被删除
                     reloc = Filed_Loc[:]
                     _sc.capture(hwnd)
-                    locs = template_match_color(_sc.get_image(), read_pic(RESOURCE_PATH + 'Filed_Finished.png'))
+                    locs = template_match(_sc.get_image(), read_pic(RESOURCE_PATH + 'Filed_Finished.png'))
                     # 判断是否有已突破结界
                     if locs is not None:
                         if len(locs) == 9:
