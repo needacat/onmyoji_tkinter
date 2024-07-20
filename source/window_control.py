@@ -13,19 +13,10 @@ def post_key(hwnd):
 
 
 def open_games():
-    def callback(chwnd, param):
-        if win32gui.GetWindowText(chwnd) == '隔离打开程序':
-            post_click(chwnd, 63, 20)
-            time.sleep(0.6)
-            post_click(chwnd, 63, 20)
-            time.sleep(0.6)
-
     try:
         subprocess.run(r'start /b E:\Download\Compressed\V5多开\V5.exe', shell=True)
         time.sleep(0.65)
         _v5_hwnd = win32gui.FindWindow(None, 'V5 程序多开器 0.1 Beta')
-        win32gui.EnumChildWindows(_v5_hwnd, callback, None)
-        win32api.PostMessage(_v5_hwnd, win32con.WM_CLOSE, 0, 0)
     except Exception as e:
         print(e)
 

@@ -1,56 +1,46 @@
-WIN_NAME = '阴阳师-网易游戏'
-WIN_KEYWORDS = '阴阳师'
-GAME_DIR = r'D:\Program\Onmyoji\bin\onmyoji.exe'
-V5_DIR = r'E:\Download\Compressed\V5多开\V5.exe'
-RESOURCE_PATH = '../resource/'
+import json
+
+with open('config.json', 'r', encoding='utf-8') as config_json_file:
+    data = json.load(config_json_file)
+
+print(data)
+
+WIN_NAME = data['WIN_NAME']
+WIN_KEYWORDS = data['WIN_KEYWORDS']
+GAME_DIR = data['GAME_DIR']
+V5_DIR = data['V5_DIR']
+RESOURCE_PATH = data['RESOURCE_PATH']
+ICON = data['ICON']
 
 # 默认执行次数
-DEFAULT_COUNT = 60
+DEFAULT_COUNT = data['DEFAULT_COUNT']
+FILED_DEFAULT_COUNT = data['FILED_DEFAULT_COUNT']
 # 匹配间隔
-M_INTERVAL = 0.15
+M_INTERVAL = data['M_INTERVAL']
 # 匹配率阈值
-THRESHOLD = 0.85
-CLICK_OFFSET = 10
+THRESHOLD = data['THRESHOLD']
+# 点击坐标偏移随机量 0~CLICK_OFFSET
+CLICK_OFFSET = data['CLICK_OFFSET']
 
 # 窗口resize后的大小
-RESIZE_XY = [882, 497]
+RESIZE_XY = data['RESIZE_XY']
 # 御魂
-YuHun = [
-    'xsfy_close.png',
-    'YuHun_TiaoZhan.png',
-    'YuHun_Exp.png',
-    'YuHun_JieSuan.png'
-]
+YuHun = data['scene']['YuHun']
 # 斗技
-DouJi = [
-    'xsfy_close.png',
-    'DouJi_ZhanDou.png',
-    'DouJi_DuanWeiBaoHu.png',
-    'DouJi_ZhunBei.png',
-    'DouJi_ZiDongShangZheng.png',
-    'DouJi_ShouDong.png',
-    'DouJi_ShouDong2.png',
-    'DouJi_BaDeTouChou.png',
-    'DouJi_JieSuan.png'
-
-]
+DouJi = data['scene']['DouJi']
 # 结界
-JieJie = [
-    'xsfy_close.png',
-    'jj_jg.png',
-    'jiesuan.png'
-]
-Filed_Loc = [
-    (200, 130), (400, 130), (630, 130),
-    (200, 220), (400, 220), (630, 220),
-    (200, 300), (400, 300), (630, 300)
-]
+Filed = data['scene']['Filed']
+# Filed_Count = [
+#     'Filed_Finished1.png',
+#     'Filed_Finished2.png',
+#     # 'Filed_Failed1.png',
+#     # 'Filed_Failed2.png'
+# ]
+# 结界位置相对坐标
+Filed_Locs = data['Filed_Locs']
 
-HuoDong = [
-    'xsfy_close.png',
-    'HuoDong_ZhanDou.png',
-    'HuoDong_JieSuan.png'
-]
-
-# TEMP_LIST = YuHun
-# LOOP_FLAG = TEMP_LIST[1]
+# 是否打印匹配率
+SHOW_THRESHOLD = ['SHOW_THRESHOLD']
+# 是否显示匹配图像
+SHOW_MATCH_TEMP = ['SHOW_MATCH_TEMP']
+SHOW_MATCH_TEMPS = ['SHOW_MATCH_TEMPS']

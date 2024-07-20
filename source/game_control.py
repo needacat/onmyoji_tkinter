@@ -1,5 +1,7 @@
+import ctypes
 import random
 import time
+
 from datetime import datetime
 
 import cv2
@@ -28,16 +30,16 @@ def template_match(src, template):
     # 进行匹配
     result = cv2.matchTemplate(src_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
-    print("maxval = ", max_val)
-    # cv2.imshow("111", template_gray)
-    # cv2.waitKey(0)
+    if SHOW_THRESHOLD:
+        print("maxval = ", max_val)
     if max_val >= THRESHOLD:
         _height, _width = template_gray.shape
         max_x, max_y = max_loc
 
-        # cv2.rectangle(src, (max_x, max_y), (max_x + _width, max_y + _height), (0, 255, 0), 2)
-        # cv2.imshow("111", src)
-        # cv2.waitKey(0)
+        if SHOW_MATCH_TEMP:
+            cv2.rectangle(src, (max_x, max_y), (max_x + _width, max_y + _height), (0, 255, 0), 2)
+            cv2.imshow("Template_match", src)
+            cv2.waitKey(0)
 
         return max_x + _width // 2, max_y + _height // 2, max_val
 
@@ -53,15 +55,16 @@ def templates_match(src, template):
     res = cv2.matchTemplate(img_gray, template_gray, cv2.TM_CCOEFF_NORMED)
     # 取匹配程度大于%90的坐标
     # np.where返回的坐标值(x,y)是(h,w)，注意h,w的顺序
-    all_loc = np.where(res >= THRESHOLD)
+    all_loc = np.where(res >= 0.90)
 
     # 圈出匹配部分
-    for pt in zip(*all_loc[::-1]):
-        bottom_right = (pt[0] + w, pt[1] + h)
-        cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
-        print(pt, bottom_right)
-    cv2.imshow('img_rgb', src)
-    cv2.waitKey(0)
+    if SHOW_MATCH_TEMPS:
+        for pt in zip(*all_loc[::-1]):
+            bottom_right = (pt[0] + w, pt[1] + h)
+            cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
+            print(pt, bottom_right)
+        cv2.imshow('Templates_match', src)
+        cv2.waitKey(0)
 
     locs = list(zip(*all_loc[::-1]))
     for i in range(0, len(locs)):

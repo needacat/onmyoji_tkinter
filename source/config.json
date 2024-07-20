@@ -1,0 +1,91 @@
+{
+  "WIN_NAME": "阴阳师-网易游戏",
+  "WIN_KEYWORDS": "阴阳师",
+  "GAME_DIR": "D:/Program/Onmyoji/bin/onmyoji.exe",
+  "V5_DIR": "E:/Download/Compressed/V5多开/V5.exe",
+  "RESOURCE_PATH": "../resource/",
+  "ICON": "../resource/icon32x32.ico",
+  "DEFAULT_COUNT": 123,
+  "FILED_DEFAULT_COUNT": 30,
+  "M_INTERVAL": 0.15,
+  "THRESHOLD": 0.9,
+  "CLICK_OFFSET": 7,
+  "RESIZE_XY": [
+    882,
+    497
+  ],
+  "SHOW_THRESHOLD": false,
+  "SHOW_MATCH_TEMP": false,
+  "SHOW_MATCH_TEMPS": false,
+  "scene": {
+    "YuHun": [
+      "xsfy_close.png",
+      "YuHun_TiaoZhan.png",
+      "YuHun_TiaoZhan2.png",
+      "HuoDong_TiaoZhan.png",
+      "YuHun_Exp.png",
+      "HuoDong_JieSuan.png",
+      "YuHun_JieSuan.png"
+    ],
+    "DouJi": [
+      "xsfy_close.png",
+      "DouJi_ZhanDou.png",
+      "DouJi_DuanWeiBaoHu.png",
+      "DouJi_ZhunBei.png",
+      "DouJi_ZiDongShangZheng.png",
+      "DouJi_ShouDong.png",
+      "DouJi_ShouDong2.png",
+      "DouJi_BaDeTouChou.png",
+      "DouJi_JieSuan.png"
+    ],
+    "Filed": [
+      "Filed_Attacking.png",
+      "Filed_Attack.png",
+      "Filed_Yes1.png",
+      "Filed_Yes2.png",
+      "Filed_Begin.png",
+      "Filed_Victory1.png",
+      "Filed_Victory2.png",
+      "Filed_Scene.png",
+      "Filed_Defeat.png"
+    ]
+  },
+  "Filed_Locs": [
+    [
+      200,
+      130
+    ],
+    [
+      400,
+      130
+    ],
+    [
+      630,
+      130
+    ],
+    [
+      200,
+      220
+    ],
+    [
+      400,
+      220
+    ],
+    [
+      630,
+      220
+    ],
+    [
+      200,
+      300
+    ],
+    [
+      400,
+      300
+    ],
+    [
+      630,
+      300
+    ]
+  ]
+}
