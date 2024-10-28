@@ -14,11 +14,9 @@ def post_key(hwnd):
 
 def open_games():
     try:
-        subprocess.run(r'start /b E:\Download\Compressed\V5多开\V5.exe', shell=True)
-        time.sleep(0.65)
-        _v5_hwnd = win32gui.FindWindow(None, 'V5 程序多开器 0.1 Beta')
-    except Exception as e:
-        print(e)
+        subprocess.run(r'start /b ' + V5_PATH, shell=True)
+    except:
+        traceback.print_exc()
 
 
 def close_games():
@@ -27,7 +25,7 @@ def close_games():
         win32gui.EnumWindows(EnumWindowsProc, _hwnd_list)
         for _hwnd in _hwnd_list:
             win32gui.PostMessage(_hwnd, win32con.WM_QUIT, 0, 0)
-    except Exception as e:
+    except:
         traceback.print_exc()
 
 

@@ -1,4 +1,3 @@
-import ctypes
 import random
 import time
 
@@ -36,7 +35,7 @@ def template_match(src, template):
         _height, _width = template_gray.shape
         max_x, max_y = max_loc
 
-        if SHOW_MATCH_TEMP:
+        if IS_SHOW_MATCH_TEMP:
             cv2.rectangle(src, (max_x, max_y), (max_x + _width, max_y + _height), (0, 255, 0), 2)
             cv2.imshow("Template_match", src)
             cv2.waitKey(0)
@@ -58,7 +57,7 @@ def templates_match(src, template):
     all_loc = np.where(res >= 0.90)
 
     # 圈出匹配部分
-    if SHOW_MATCH_TEMPS:
+    if IS_SHOW_MATCH_TEMPS:
         for pt in zip(*all_loc[::-1]):
             bottom_right = (pt[0] + w, pt[1] + h)
             cv2.rectangle(src, pt, bottom_right, (100, 255, 100), 2)
@@ -87,22 +86,23 @@ def template_match_color(src, template):
 
 
 def post_click(hwnd, client_x, client_y):
-    win32gui.PostMessage(hwnd, win32con.WM_ACTIVATEAPP, 1, 0)
-    win32gui.PostMessage(hwnd, win32con.WM_SETFOCUS, 0, 0)
-    win32gui.PostMessage(hwnd, win32con.WM_SETCURSOR, 0, win32api.MAKELONG(win32con.HTCLIENT, win32con.WM_MOUSEMOVE))
+    # win32gui.PostMessage(hwnd, win32con.WM_ACTIVATEAPP, 1, 0)
+    # win32gui.PostMessage(hwnd, win32con.WM_SETFOCUS, 0, 0)
+    # win32gui.PostMessage(hwnd, win32con.WM_SETCURSOR, 0, win32api.MAKELONG(win32con.HTCLIENT, win32con.WM_MOUSEMOVE))
     # 模拟鼠标左键单击
     LPARAM = win32api.MAKELONG(client_x, client_y)
-    win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, LPARAM)
-    win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
+    # win32gui.PostMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, LPARAM)
+    win32gui.SendMessage(hwnd, win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, LPARAM)
+    # win32gui.PostMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
+    win32gui.SendMessage(hwnd, win32con.WM_LBUTTONUP, 0, LPARAM)
 
 
 def click_matched(hwnd, x, y, log_text, tInt):
-    time.sleep(random.random() + random.randint(0, 1))
+    time.sleep(random.random())
     client_x = x + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
     client_y = y + random.randint(CLICK_OFFSET * -1, CLICK_OFFSET)
     post_click(hwnd, client_x, client_y)
-    # logger.info(f'post {hwnd} {client_x},{client_y}')
-    print(f'[P] | {hwnd} ({client_x},{client_y})', end='\n——————————————————————————\n')
+    time.sleep(CLICK_INTERVAL)
+    print(f'[Clicked] | {hwnd} ({client_x},{client_y})', end='\n——————————————————————————\n')
     # 时间格式 %Y-%m-%d %H:%M:%S
     log_text.insert('end', datetime.now().strftime('%H:%M:%S') + f' | {tInt.get()} | [M]\n')
-    time.sleep(2)

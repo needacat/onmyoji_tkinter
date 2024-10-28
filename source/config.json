@@ -1,13 +1,15 @@
 {
-  "WIN_NAME": "阴阳师-网易游戏",
+  "WIN_NAME": "OSS by 1y",
   "WIN_KEYWORDS": "阴阳师",
-  "GAME_DIR": "D:/Program/Onmyoji/bin/onmyoji.exe",
-  "V5_DIR": "E:/Download/Compressed/V5多开/V5.exe",
-  "RESOURCE_PATH": "../resource/",
-  "ICON": "../resource/icon32x32.ico",
-  "DEFAULT_COUNT": 123,
+  "GAME_PATH": "D:/Program/Onmyoji/bin/onmyoji.exe",
+  "V5_PATH": "E:/Download/Compressed/V5多开/V5.exe",
+  "RESOURCE_PATH": "resource/",
+  "ICON_PATH": "resource/icon.ico",
+  "IS_DEBUG": false,
+  "DEFAULT_COUNT": 120,
   "FILED_DEFAULT_COUNT": 30,
-  "M_INTERVAL": 0.15,
+  "DOWNGRADE_COUNT": 0,
+  "CLICK_INTERVAL": 2,
   "THRESHOLD": 0.9,
   "CLICK_OFFSET": 7,
   "RESIZE_XY": [
@@ -15,8 +17,9 @@
     497
   ],
   "SHOW_THRESHOLD": false,
-  "SHOW_MATCH_TEMP": false,
-  "SHOW_MATCH_TEMPS": false,
+  "IS_SHOW_MATCH_TEMP": false,
+  "IS_SHOW_MATCH_TEMPS": false,
+  "注释：scene": "匹配各场景的模板图片",
   "scene": {
     "YuHun": [
       "xsfy_close.png",
@@ -48,9 +51,13 @@
       "Filed_Victory2.png",
       "Filed_Scene.png",
       "Filed_Defeat.png"
+    ],
+    "FILED_COUNT_TEMP": [
+      "Filed_Finished1.png",
+      "Filed_Finished2.png"
     ]
   },
-  "Filed_Locs": [
+  "FILED_LOCS": [
     [
       200,
       130

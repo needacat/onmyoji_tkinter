@@ -51,7 +51,7 @@ class ScreenCapture:
             self.Bitmap.SaveBitmapFile(self.saveDC, filepath)
         return self.get_image()
 
-    def get_image(self):
+    def get_image(self) -> np.ndarray:
         bmp_info = self.Bitmap.GetInfo()
         bmp_data = self.Bitmap.GetBitmapBits(True)
         img = np.frombuffer(bmp_data, dtype='uint8')
